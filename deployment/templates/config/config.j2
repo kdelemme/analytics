@@ -1,14 +1,14 @@
 'use strict';
 module.exports = {
 	port: {{ port }},
-    cookieSecret: {{ cookieSecret }},
+    cookieSecret: '{{ cookie_secret }}',
     database: {
-    	client: {{ database.client }},
+    	client: '{{ database_client }}',
     	connection: {
-			host: {{ database.host }},
-			user: {{ database.user }},
-			password: {{ database.password }},
-			database: {{ database.database }}
+			host: '{{ database_host }}',
+			user: '{{ database_user }}',
+			password: '{{ database_password }}',
+			database: '{{ database_database }}'
 		}
 	}
 };
