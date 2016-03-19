@@ -7,11 +7,15 @@ const sqlClient = require('knex')(config.database);
 const analyticsRepository = require('./lib/repository/sqlAnalyticsRepository')(sqlClient);
 const uniqueId = require('./lib/domain/uniqueId')();
 
-app.use(express.static('public'));
+
 app.use(cookieParser(config.cookieSecret));
 
-app.get('/status', function(req, res) {
+app.get('/status', (req, res) => {
 	res.status(200).send('OK');
+});
+
+app.get('/a.js', (req, res) => {
+	res.status(200).sendFile(__dirname + '/public/a.js');
 });
 
 app.use(require('./lib/tracker')(config, uniqueId, analyticsRepository));
