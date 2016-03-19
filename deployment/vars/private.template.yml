@@ -1,2 +1,7 @@
 ---
-#db_password: 'myDbPassword'
+# cookie_secret: 'mysecret'
+# database_client: 'mysql'
+# database_host: 'localhost'
+# database_user: 'root'
+# database_password: ''
+# database_database: 'analytics'
