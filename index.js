@@ -3,7 +3,8 @@ const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser')
 const config  = require('./config/config');
-const analyticsRepository = require('./lib/repository/inMemoryAnalyticsRepository')();
+const sqlClient = require('knex')(config.database);
+const analyticsRepository = require('./lib/repository/sqlAnalyticsRepository')(sqlClient);
 const sessionId = require('./lib/domain/sessionId')();
 
 app.use(cookieParser(config.cookieSecret));
