@@ -1,0 +1,48 @@
+---
+- hosts: 127.0.0.1
+  tasks:
+   - name: Create tar file from source
+     local_action: command tar -zvcf /tmp/source.tgz --exclude 'node_modules' --exclude '.git' --exclude 'deployment' -C .. .
+
+- hosts: production
+  vars:
+    projects_path: /var/apps
+    logs_path: /var/log/apps
+    app_name: analytics
+    port: 4001
+  remote_user: appadmin
+  tasks:
+  - include_vars: vars/private.yml
+
+  - name: Stop supervisor for the application
+    action: command supervisorctl stop {{ app_name }}
+
+  - name: Copy tarball to remote server
+    copy: src=/tmp/source.tgz dest=/tmp/ force=true owner=appadmin
+
+  - name: Delete project directory
+    file: path={{ projects_path }}/{{ app_name }} state=absent
+
+  - name: Create project directory
+    file: path={{ projects_path }}/{{ app_name }} state=directory
+
+  - name: Extract tarball to remote directory
+    unarchive: copy=no src=/tmp/source.tgz dest={{ projects_path }}/{{ app_name }}
+
+  - name: Create api config file from template
+    template: src=templates/config/config.j2 dest={{ projects_path }}/{{ app_name }}/config/config.js
+
+  - name: Run npm install
+    npm: path={{ projects_path }}/{{ app_name }}
+
+  - name: Create logs directory if it doesn't exist yet
+    file: path={{ logs_path }} state=directory
+
+  - name: Create supervisor file from template
+    template: src=templates/supervisor/supervisor.j2 dest=/etc/supervisor/conf.d/{{ app_name }}.conf
+
+  - name: Update supervisor
+    action: command supervisorctl update
+
+  - name: Start supervisor for the application
+    action: command supervisorctl start {{ app_name }}
