@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser')
 const config  = require('./config/config');
 const sqlClient = require('knex')(config.database);
 const analyticsRepository = require('./lib/repository/sqlAnalyticsRepository')(sqlClient);
-const sessionId = require('./lib/domain/sessionId')();
+const uniqueId = require('./lib/domain/uniqueId')();
 
 app.use(cookieParser(config.cookieSecret));
 
@@ -13,7 +13,7 @@ app.get('/status', function(req, res) {
 	res.status(200).send('OK');
 });
 
-app.use(require('./lib/tracker.js')(config, sessionId, analyticsRepository));
+app.use(require('./lib/tracker.js')(config, uniqueId, analyticsRepository));
 
 const server = app.listen(config.port, function () {
   const host = server.address().address;

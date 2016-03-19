@@ -1,6 +1,7 @@
 CREATE DATABASE `analytics`;
 CREATE TABLE `analytics`(
 	id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+	user_id VARCHAR(30) NOT NULL,
 	session_id VARCHAR(30) NOT NULL,
 	referrer VARCHAR(2083),
 	title VARCHAR(255),
