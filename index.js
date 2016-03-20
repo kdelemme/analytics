@@ -7,7 +7,6 @@ const sqlClient = require('knex')(config.database);
 const analyticsRepository = require('./lib/repository/sqlAnalyticsRepository')(sqlClient);
 const uniqueId = require('./lib/domain/uniqueId')();
 
-
 app.use(cookieParser(config.cookieSecret));
 
 app.get('/status', (req, res) => {
