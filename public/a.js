@@ -8,7 +8,8 @@ function getData() {
 		screenWidth: screen.width,
 		userAgent: navigator.userAgent,
 		language: navigator.language,
-		platform: navigator.platform
+		platform: navigator.platform,
+		site_id: window._analytics.site_id
 	}
 }
 function serialize(data) {
